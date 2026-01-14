@@ -18,7 +18,7 @@
  * @returns {Promise<string>} - The agent's response
  */
 async function getAIResponse(userInput) {
-    const webhookUrl = 'https://n8ngc.codeblazar.org/webhook-test/cde1b808-6567-4916-9699-61475929083a';
+    const webhookUrl = 'https://n8ngc.codeblazar.org/webhook/cde1b808-6567-4916-9699-61475929083a';
 
     try {
         const response = await fetch(webhookUrl, {
@@ -61,3 +61,4 @@ async function getAIResponse(userInput) {
 
 // Export the function for use in debt.html
 export { getAIResponse };
+
