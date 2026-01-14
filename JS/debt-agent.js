@@ -3,89 +3,61 @@
 // ============================================================================
 //
 // This file contains the chat agent/workflow for the DEBT & CREDIT page
-// Team Member: [YOUR NAME HERE]
-// Last Updated: [DATE]
+// Team Member: [Jovan]
+// Last Updated: January 14, 2026
 //
 // INSTRUCTIONS:
-// 1. Replace getAIResponse() function below with your custom agent logic
-// 2. This file is imported in debt.html - no other changes needed there
-// 3. Your agent should accept userInput and return a response string
-//
+// 1. This file is imported in debt.html - no other changes needed there
+// 2. The agent integrates with your n8n workflow via the provided webhook
+// 3. Responses are restricted to debt & credit topics only (handled by n8n prompt)
 // ============================================================================
 
 /**
  * Main function for Debt & Credit Agent
  * @param {string} userInput - The user's question or input
- * @returns {string|Promise<string>} - The agent's response
- * 
- * REPLACE THIS FUNCTION WITH YOUR CUSTOM AGENT LOGIC
+ * @returns {Promise<string>} - The agent's response
  */
-function getAIResponse(userInput) {
-    // 🔴 TODO: REPLACE THIS ENTIRE FUNCTION WITH YOUR CUSTOM DEBT & CREDIT AGENT
-    
-    // OPTION A: If using an API endpoint
-    // ────────────────────────────────────
-    // async function getAIResponse(userInput) {
-    //     try {
-    //         const response = await fetch('YOUR_DEBT_AGENT_API', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ message: userInput, topic: 'debt' })
-    //         });
-    //         const data = await response.json();
-    //         return data.response;
-    //     } catch (error) {
-    //         return "Error connecting to debt & credit agent. Please try again.";
-    //     }
-    // }
-    
-    // OPTION B: If using a workflow engine (n8n, Make, Zapier)
-    // ────────────────────────────────────────────────────────
-    // async function getAIResponse(userInput) {
-    //     const response = await fetch('YOUR_N8N_WEBHOOK_URL', {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({ query: userInput })
-    //     });
-    //     const data = await response.json();
-    //     return data.debtResponse;
-    // }
-    
-    // OPTION C: Local logic with predefined responses
-    // ───────────────────────────────────────────────
-    // function getAIResponse(userInput) {
-    //     const input = userInput.toLowerCase();
-    //     
-    //     if (input.includes('credit score') || input.includes('credit')) {
-    //         return "Your credit score is determined by...";
-    //     }
-    //     return "Default debt & credit response...";
-    // }
-    
-    // PLACEHOLDER
-    return "🔴 Debt & Credit agent not configured yet. Please add your custom agent logic to debt-agent.js";
+async function getAIResponse(userInput) {
+    const webhookUrl = 'https://n8ngc.codeblazar.org/webhook-test/cde1b808-6567-4916-9699-61475929083a';
+
+    try {
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: userInput.trim() // Clean up input
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Webhook responded with status ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Extract the AI response from n8n output
+        // Adjust the key below if your n8n webhook returns a different field name
+        // Common possibilities: data.output, data.response, data.text, or data.message
+        const aiResponse = data.output || data.response || data.text || data.message;
+
+        if (!aiResponse || typeof aiResponse !== 'string') {
+            throw new Error('Invalid response format from n8n');
+        }
+
+        // Optional: Add a Singapore-specific disclaimer (recommended for compliance)
+        const disclaimer = "\n\n**Disclaimer:** This is general information only and not personalized financial advice. Consult a qualified professional or Credit Counselling Singapore (CCS) for advice tailored to your situation.";
+
+        return aiResponse + disclaimer;
+
+    } catch (error) {
+        console.error('Debt & Credit Agent Error:', error);
+        return "Sorry, I'm having trouble connecting to the debt & credit assistant right now. Please try again later or contact support.";
+    }
 }
 
-// ============================================================================
-// HELPER FUNCTIONS (Optional)
-// ============================================================================
-// Add any helper functions your agent needs here
 
-/**
- * Example helper function for processing debt & credit data
- * Modify or delete as needed for your workflow
- */
-function processDebtQuery(userInput) {
-    // Add your custom processing logic here
-    return userInput;
-}
 
-// ============================================================================
-// CONFIGURATION (Optional)
-// ============================================================================
-// If your agent needs configuration, add it here
-
-const debtConfig = {
-    // Add any configuration your agent needs
-    // Example: apiKey, endpoint, etc.
-};
+// Export the function for use in debt.html
+export { getAIResponse };
