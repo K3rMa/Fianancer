@@ -1,91 +1,210 @@
-// ============================================================================
-// INVESTING AGENT/WORKFLOW - investing-agent.js
-// ============================================================================
-//
-// This file contains the chat agent/workflow for the INVESTING page
-// Team Member: [YOUR NAME HERE]
-// Last Updated: [DATE]
-//
-// INSTRUCTIONS:
-// 1. Replace getAIResponse() function below with your custom agent logic
-// 2. This file is imported in investing.html - no other changes needed there
-// 3. Your agent should accept userInput and return a response string
-//
-// ============================================================================
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INVESTING AI AGENT - Interactive Features
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-/**
- * Main function for Investing Agent
- * @param {string} userInput - The user's question or input
- * @returns {string|Promise<string>} - The agent's response
- * 
- * REPLACE THIS FUNCTION WITH YOUR CUSTOM AGENT LOGIC
- */
-function getAIResponse(userInput) {
-    // 🔴 TODO: REPLACE THIS ENTIRE FUNCTION WITH YOUR CUSTOM INVESTING AGENT
-    
-    // OPTION A: If using an API endpoint
-    // ────────────────────────────────────
-    // async function getAIResponse(userInput) {
-    //     try {
-    //         const response = await fetch('YOUR_INVESTING_AGENT_API', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ message: userInput, topic: 'investing' })
-    //         });
-    //         const data = await response.json();
-    //         return data.response;
-    //     } catch (error) {
-    //         return "Error connecting to investing agent. Please try again.";
-    //     }
-    // }
-    
-    // OPTION B: If using a workflow engine (n8n, Make, Zapier)
-    // ────────────────────────────────────────────────────────
-    // async function getAIResponse(userInput) {
-    //     const response = await fetch('YOUR_N8N_WEBHOOK_URL', {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({ query: userInput })
-    //     });
-    //     const data = await response.json();
-    //     return data.investingResponse;
-    // }
-    
-    // OPTION C: Local logic with predefined responses
-    // ───────────────────────────────────────────────
-    // function getAIResponse(userInput) {
-    //     const input = userInput.toLowerCase();
-    //     
-    //     if (input.includes('index fund') || input.includes('stock')) {
-    //         return "Index funds are a great way to start...";
-    //     }
-    //     return "Default investing response...";
-    // }
-    
-    // PLACEHOLDER
-    return "🔴 Investing agent not configured yet. Please add your custom agent logic to investing-agent.js";
-}
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 1. SCROLL ANIMATIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-// ============================================================================
-// HELPER FUNCTIONS (Optional)
-// ============================================================================
-// Add any helper functions your agent needs here
-
-/**
- * Example helper function for processing investing data
- * Modify or delete as needed for your workflow
- */
-function processInvestingQuery(userInput) {
-    // Add your custom processing logic here
-    return userInput;
-}
-
-// ============================================================================
-// CONFIGURATION (Optional)
-// ============================================================================
-// If your agent needs configuration, add it here
-
-const investingConfig = {
-    // Add any configuration your agent needs
-    // Example: apiKey, endpoint, etc.
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
 };
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+    observer.observe(el);
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 2. AI INVESTMENT GUIDE CHATBOT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const investingGuideResponses = {
+    investing: [
+        "Investing means putting your money into assets (stocks, bonds, real estate) to make it grow over time. It's how wealth compounds—your money makes money!",
+        "The stock market isn't gambling—it's ownership. When you buy a stock, you own a tiny piece of a company. As it grows, your piece becomes more valuable.",
+        "Investing early is the ultimate cheat code. $100/month starting at 18 = $1M+ by 65 with 7% returns. Start NOW. Seriously."
+    ],
+    stocks: [
+        "Stocks = ownership in companies. When you buy Apple stock, you literally own a tiny percentage of Apple. If Apple makes money, you make money.",
+        "Stock prices go up and down daily, but historically they've averaged ~10% yearly returns. The secret? Time in market > timing the market. Stay invested.",
+        "Individual stocks are risky because you're betting on one company. Better: diversify with index funds or ETFs that own hundreds of companies."
+    ],
+    etf: [
+        "ETFs (Exchange-Traded Funds) are baskets of stocks bundled together. Instead of picking 50 stocks, buy 1 ETF that holds them all. Instant diversification!",
+        "Popular beginner ETFs: VOO (tracks S&P 500), VTI (entire US market), VXUS (international). Low fees, automatic diversification. Perfect for starting out.",
+        "ETF returns historically average 8-10% yearly. Boring is beautiful. Set it and forget it. Let compound interest do the heavy lifting."
+    ],
+    bonds: [
+        "Bonds are loans you give to companies or governments. They pay you interest predictably. Lower returns than stocks (~3-5%) but much safer.",
+        "Why bonds? Stability. In your 20s-40s: 80/20 stocks/bonds. In your 50s-60s: 60/40 stocks/bonds. As you age, safety becomes more important.",
+        "Bond ladder: Buy bonds maturing at different times (2yr, 5yr, 10yr). When one matures, buy another at the end. Predictable income stream."
+    ],
+    crypto: [
+        "Cryptocurrency is digital money (Bitcoin, Ethereum, etc.). Extremely volatile, high reward/high risk. Don't invest more than you can afford to lose.",
+        "Crypto pros: 24/7 trading, decentralized, borderless. Crypto cons: Unregulated, scams everywhere, extreme price swings. 5-10% of portfolio max for beginners.",
+        "Bitcoin is 'digital gold'—limited supply, deflationary. Ethereum enables apps. Most others? Speculative. Do your research. DYOR (Do Your Own Research)."
+    ],
+    risk: [
+        "Risk tolerance = how much price swings stress you. Can't sleep over a 20% drop? Conservative portfolio (stocks/bonds mix). Love volatility? Aggressive.",
+        "Young + long timeline = can be aggressive. You have time to recover from crashes. At 18-25: 90% stocks, 10% bonds is reasonable. Age 30+: dial it back.",
+        "Diversification kills risk without killing returns. Don't put eggs in one basket. Stocks + bonds + crypto + real estate. Spread it around."
+    ],
+    compound: [
+        "Compound interest = 'interest on interest.' Einstein called it the 8th wonder of world. $100 → $109 (10% year 1) → $119 (10% year 2). Snowball effect!",
+        "The math: $1000 at 8% yearly = $1080 year 1, $1166 year 2, $1586 year 5, $4661 year 30. Time is your superpower. Start early, stay consistent.",
+        "This is why starting at 18 vs 28 = $500K+ difference by retirement. 10 years of compound interest is worth years of saving. Don't sleep on it."
+    ],
+    diversify: [
+        "Diversification = don't put all eggs in one basket. Own stocks, bonds, maybe real estate, maybe crypto. If one crashes, others survive.",
+        "Asset allocation matters more than picking winners. A boring portfolio (80% index funds, 20% bonds) beats 90% of professional investors. Seriously.",
+        "Rebalance annually. If stocks did great and now it's 85% of portfolio, sell some stocks, buy bonds to get back to 80/20. Lock in gains, maintain risk."
+    ],
+    default: [
+        "I'm here to help with investing fundamentals, risk tolerance, diversification, and building wealth. What would you like to learn?",
+        "Remember: investing isn't about getting rich quick—it's about getting rich for sure. Compound interest + time + consistency = generational wealth.",
+        "Start small. Invest consistently. Diversify. Ignore noise. Stay the course. That's literally the winning formula. You've got this."
+    ]
+};
+
+function getInvestingGuideResponse(userMessage) {
+    const message = userMessage.toLowerCase();
+    
+    if (message.includes('investing') || message.includes('invest')) {
+        return investingGuideResponses.investing[Math.floor(Math.random() * investingGuideResponses.investing.length)];
+    } else if (message.includes('stock')) {
+        return investingGuideResponses.stocks[Math.floor(Math.random() * investingGuideResponses.stocks.length)];
+    } else if (message.includes('etf') || message.includes('fund')) {
+        return investingGuideResponses.etf[Math.floor(Math.random() * investingGuideResponses.etf.length)];
+    } else if (message.includes('bond')) {
+        return investingGuideResponses.bonds[Math.floor(Math.random() * investingGuideResponses.bonds.length)];
+    } else if (message.includes('crypto') || message.includes('bitcoin') || message.includes('ethereum')) {
+        return investingGuideResponses.crypto[Math.floor(Math.random() * investingGuideResponses.crypto.length)];
+    } else if (message.includes('risk') || message.includes('aggressive') || message.includes('conservative')) {
+        return investingGuideResponses.risk[Math.floor(Math.random() * investingGuideResponses.risk.length)];
+    } else if (message.includes('compound') || message.includes('interest') || message.includes('growth')) {
+        return investingGuideResponses.compound[Math.floor(Math.random() * investingGuideResponses.compound.length)];
+    } else if (message.includes('diversi')) {
+        return investingGuideResponses.diversify[Math.floor(Math.random() * investingGuideResponses.diversify.length)];
+    }
+    
+    return investingGuideResponses.default[Math.floor(Math.random() * investingGuideResponses.default.length)];
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 3. CHAT INPUT HANDLING
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const investChatInput = document.getElementById('investChatInput');
+const investSendBtn = document.getElementById('investSendBtn');
+const investChatMessages = document.getElementById('investChatMessages');
+
+function addChatMessage(text, isBot = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isBot ? 'bot' : 'user'}`;
+    
+    if (isBot) {
+        messageDiv.innerHTML = `
+            <div class="message-avatar">📈</div>
+            <div class="message-content">${text}</div>
+        `;
+    } else {
+        messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
+    }
+    
+    investChatMessages.appendChild(messageDiv);
+    investChatMessages.scrollTop = investChatMessages.scrollHeight;
+}
+
+function handleInvestChatSubmit() {
+    const userMessage = investChatInput.value.trim();
+    if (!userMessage) return;
+    
+    // Add user message
+    addChatMessage(userMessage, false);
+    investChatInput.value = '';
+    
+    // Simulate typing and add bot response
+    setTimeout(() => {
+        const botResponse = getInvestingGuideResponse(userMessage);
+        addChatMessage(botResponse, true);
+    }, 500);
+}
+
+investSendBtn?.addEventListener('click', handleInvestChatSubmit);
+investChatInput?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        handleInvestChatSubmit();
+    }
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 4. RISK PROFILE SLIDER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const riskSlider = document.getElementById('riskSlider');
+const conservativeProfile = document.getElementById('conservativeProfile');
+const balancedProfile = document.getElementById('balancedProfile');
+const aggressiveProfile = document.getElementById('aggressiveProfile');
+
+if (riskSlider && conservativeProfile && balancedProfile && aggressiveProfile) {
+    const showProfile = (value) => {
+        conservativeProfile.style.display = 'none';
+        balancedProfile.style.display = 'none';
+        aggressiveProfile.style.display = 'none';
+
+        // Map smooth slider (0-100) into 3 buckets
+        if (value <= 33) {
+            conservativeProfile.style.display = 'block';
+        } else if (value <= 66) {
+            balancedProfile.style.display = 'block';
+        } else {
+            aggressiveProfile.style.display = 'block';
+        }
+    };
+
+    // Initialize the profiles based on the starting slider position
+    showProfile(parseInt(riskSlider.value, 10));
+
+    riskSlider.addEventListener('input', (e) => {
+        const value = parseInt(e.target.value, 10);
+        showProfile(value);
+    });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 5. PARALLAX SHAPES
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const shapes = document.querySelectorAll('.gradient-shape');
+
+document.addEventListener('mousemove', (e) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    
+    shapes.forEach((shape, index) => {
+        const offset = 50 + (index * 20);
+        const x = (mouseX / window.innerWidth) * offset - offset / 2;
+        const y = (mouseY / window.innerHeight) * offset - offset / 2;
+        
+        shape.style.transform = `translate(${x}px, ${y}px)`;
+    });
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 6. BACK NAVIGATION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const backButton = document.querySelector('.back-button');
+backButton?.addEventListener('click', (e) => {
+    // Smooth transition handled by browser default
+});
