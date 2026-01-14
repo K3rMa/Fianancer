@@ -78,11 +78,6 @@ html {
     filter: drop-shadow(0 4px 16px rgba(79, 209, 197, 0.4));
 }
 
-.logo-link.top-right {
-    left: auto;
-    right: 1.5rem;
-}
-
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     line-height: 1.6;
@@ -2635,5 +2630,333 @@ body {
     
     .carousel-btn {
         display: none;
+    }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   INVESTING & DEBT PAGE STYLES
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Credit Components Grid */
+.credit-components-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.component-card {
+    background: var(--glass-card);
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    backdrop-filter: blur(var(--blur-glass));
+    transition: var(--transition-smooth);
+}
+
+.component-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 40px rgba(79, 209, 197, 0.3);
+}
+
+.component-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.component-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.component-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.score-ranges, .factors-list, .impact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.score-range {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.score-range.poor {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.score-range.fair {
+    background: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+}
+
+.score-range.good {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.score-range.excellent {
+    background: rgba(79, 209, 197, 0.2);
+    color: var(--primary-glow);
+}
+
+.factors-list li, .impact-list li {
+    color: var(--text-muted);
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.factors-list li::before, .impact-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-glow);
+    font-weight: bold;
+}
+
+/* Payoff Strategies */
+.payoff-strategies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.strategy-card {
+    background: var(--glass-card);
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    backdrop-filter: blur(var(--blur-glass));
+    transition: var(--transition-smooth);
+}
+
+.strategy-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 40px rgba(79, 209, 197, 0.3);
+}
+
+.strategy-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.strategy-subtitle {
+    color: var(--primary-glow);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.strategy-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.strategy-example {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.example-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary-glow);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.debt-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.strategy-benefit {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    background: rgba(79, 209, 197, 0.15);
+    color: var(--primary-glow);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Credit Habits Grid */
+.credit-habits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.habit-dos-column, .habit-donts-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.habit-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.habit-title.do {
+    color: var(--success-accent);
+}
+
+.habit-title.dont {
+    color: #ef4444;
+}
+
+.credit-habits-grid .habit-item {
+    background: var(--glass-card);
+    border: 2px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    backdrop-filter: blur(var(--blur-glass));
+    transition: var(--transition-smooth);
+}
+
+.credit-habits-grid .habit-item.do {
+    border-color: var(--success-accent);
+    background: rgba(34, 197, 94, 0.05);
+}
+
+.credit-habits-grid .habit-item.dont {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.credit-habits-grid .habit-item:hover {
+    transform: translateX(8px);
+}
+
+.credit-habits-grid .habit-item strong {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Lifestyle Cards */
+.lifestyle-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.lifestyle-card {
+    background: var(--glass-card);
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    backdrop-filter: blur(var(--blur-glass));
+    transition: var(--transition-smooth);
+}
+
+.lifestyle-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 40px rgba(79, 209, 197, 0.3);
+}
+
+.lifestyle-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.lifestyle-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.lifestyle-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+/* Investing Concepts Grid */
+.investing-basics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.concept-card {
+    background: var(--glass-card);
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(var(--blur-glass));
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+}
+
+.concept-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 40px rgba(79, 209, 197, 0.3);
+}
+
+.concept-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.concept-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.concept-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    flex-grow: 1;
+}
+
+.concept-benefit {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(79, 209, 197, 0.1);
+    border: 1px solid rgba(79, 209, 197, 0.3);
+    border-radius: 8px;
+    color: var(--primary-glow);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .credit-habits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payoff-strategies-grid {
+        grid-template-columns: 1fr;
     }
 }
